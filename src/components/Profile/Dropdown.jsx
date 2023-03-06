@@ -6,6 +6,7 @@ function Dropdown() {
   const [currentList, setCurrentList] = useState("Profile Setting");
   const dropList = [
     { id: 1, name: "Profile Setting", href: "/profile" },
+    { id: 1, name: "Chat Inbox", href: "/inbox" },
     { id: 1, name: "Scheduled Rides", href: "/scheduled-rides" },
     { id: 1, name: "Rides History", href: "/ride-history" },
   ];
