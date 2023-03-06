@@ -6,9 +6,9 @@ import { io } from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
 import { setSocket } from "./redux/slices/SocketSlice";
 import ProfilePage from "./pages/ProfilePage";
-import ScheduledRidePage from "./pages/scheduledRidePage";
 import RideHistoryPage from "./pages/RideHistoryPage";
 import InboxPage from "./pages/InboxPage";
+import ScheduledRidePage from "./pages/ScheduledRidePage";
 
 
 function App() {
