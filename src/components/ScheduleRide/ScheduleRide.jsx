@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from "framer-motion";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setScheduleDate, setScheduleTime } from '../../redux/slices/scheduleSlice';
+import { setScheduleDate, setScheduleTime } from '../../redux/slices/ScheduleSlice';
 
 const ScheduleRide = () => {
     const dispatch = useDispatch();
