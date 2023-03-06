@@ -1,0 +1,1 @@
+export default "https://www.server.gadsto.store"
