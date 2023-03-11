@@ -1,10 +1,12 @@
 import { faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { io } from "socket.io-client";
 import { blankProfile } from "../../assets";
+import { LocationContext } from "../../context/LocationContext";
 import { setToDriverId } from "../../redux/slices/ChatSlice";
 
 const Inbox = () => {
@@ -14,18 +16,50 @@ const Inbox = () => {
   const [messages, setMasseges] = useState([]);
   const { toDriverId } = useSelector((state) => state.chatSlice);
   const { userId } = useSelector((state) => state.auth);
-  const { socket } = useSelector((state) => state.socket);
+  const {socket} = useContext(LocationContext)
   const [inbox, setInbox] = useState(false);
   const dispatch = useDispatch();
+  const chatRef = useRef(null);
+
+  useEffect(() => {
+    scrollToBottom();
+  });
+
+  function scrollToBottom() {
+    chatRef.current.scrollTo({
+      top: chatRef.current.scrollHeight,
+      behavior: "smooth"
+    });
+  }
+
+  const { setSocket } = useContext(LocationContext)
+  useEffect(() => {
+    const data = io(import.meta.env.VITE_SERVER_DOMAIN)
+    setSocket(data)
+    socket && socket.emit("addUser", userId);
+  }, [])
+  useEffect(() => {
+    const data = io(import.meta.env.VITE_SERVER_DOMAIN)
+    setSocket(data)
+    socket && socket.on("receive_msg", (data) => {
+      setMasseges((pre) => [...pre, data]);
+    });
+  }, [])
 
   const submitHandler = async (e) => {
     e.preventDefault();
 
     socket.emit("send_msg", {
       to: toDriverId,
-      msg: chatInput,
+      message: chatInput,
       senderType: "Passenger",
     });
+
+    const newMsg = {
+      message: chatInput,
+      senderType: "Passenger"
+    }
+    setMasseges([...messages, newMsg])
 
     const token = localStorage.getItem("token");
     const { data } = await axios.post(
@@ -90,7 +124,7 @@ const Inbox = () => {
             <h1 className="text-lg text-white font-medium">{chater?.name}</h1>
           </div>
         </div>
-        <div className="h-[22rem] overflow-y-auto">
+        <div ref={chatRef} className="h-[22rem] overflow-y-scroll">
           {messages?.map((msg) =>
             msg?.senderType == "Passenger" ? (
               <div className=" my-5 w-full flex justify-end">

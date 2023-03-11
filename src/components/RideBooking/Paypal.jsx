@@ -1,28 +1,42 @@
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { LocationContext } from "../../context/LocationContext";
 import { setPayment } from "../../redux/slices/ModalSlice";
 import url from "../../api/Api";
+import { io } from "socket.io-client";
 
 const Paypal = ({ fare }) => {
   const { userId } = useSelector((state) => state.auth);
-  const { scheduleDate, scheduleTime } = useSelector((state)=> state.scheduleRide)
+  const { scheduleDate, scheduleTime } = useSelector((state) => state.scheduleRide)
   const { categoryId } = useSelector((state) => state.modal);
-  console.log(categoryId);
   const { startPoint, endPoint } = useSelector((state) => state.locationSlice);
-  const { startingCoordinates, destinationCoordinates } =
+  const { startingCoordinates, destinationCoordinates, socket, setSocket } =
     useContext(LocationContext);
   const [orderId, setOrderId] = useState();
   const { distance } = useContext(LocationContext);
   const dispatch = useDispatch();
   const setFare = fare * distance;
 
+
+  useEffect(() => {
+    const data = io(import.meta.env.VITE_SERVER_DOMAIN)
+    setSocket(data)
+    socket && socket.emit("addUser", userId);
+  }, [])
+
   const sendRequest = async () => {
+    socket.emit("send_request", {
+     _id: userId,
+     pickupLocation: startPoint,
+     destination: endPoint,
+     sender:{name: 'Fayis'}
+    });
+
     const token = localStorage.getItem("token");
-    await axios.post(
+   const {data} = await axios.post(
       `${url}/api/passenger/ride-request`,
       {
         userId,
@@ -38,6 +52,7 @@ const Paypal = ({ fare }) => {
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );
+    debugger
     dispatch(setPayment());
   };
 

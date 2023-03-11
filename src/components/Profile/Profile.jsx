@@ -127,7 +127,7 @@ const Profile = () => {
                             >
                                 Cancel
                             </button>
-                           
+
                         </>
                     )}
                 </div>
@@ -150,22 +150,7 @@ const Profile = () => {
                                 </div>
                                 <p className=" text-red-600">{errors.name?.message}</p>
                             </div>
-                            <div className="col-span-12 md:col-span-6  flex jusify-center flex-col items-center md:mt-16  gap-10">
-                                <div>
-                                    <label htmlFor="email">Email : </label>
-                                    <input
-                                        type="text"
-                                        defaultValue={user?.email}
-                                        {...register("email")}
-                                        name="email"
-                                        id="email"
-                                        className=" py-3 pl-3 border border-gray-300 hover:shadow-lg rounded-lg"
-                                    />
-                                </div>
-                                <p className=" text-red-600">{errors.email?.message}</p>
-                            </div>
-
-                            <div className="col-span-12 md:col-span-6 flex jusify-center flex-col items-center md:mt-8 gap-10">
+                            <div className="col-span-12 md:col-span-6 flex jusify-center flex-col items-center md:mt-16 gap-10">
                                 <div>
                                     <label htmlFor="mob">Mobile : </label>
                                     <input
@@ -192,14 +177,14 @@ const Profile = () => {
                                 <label htmlFor="profile">{user?.profile ? "Update your profile photo" : 'Add profile photo'}</label>
                             </div>
                             <input type="file" className="hidden" onChange={e => fileUpload(e)} name="profile" id='profile' />
-                           <div className="col-span-12 flex justify-center">
-                           <button
-                                type="submit"
-                                className=" w-5/6 bg-gradient-to-b hover:bg-gradient-to-t from-gray-500 rounded-md to-black text-white py-1 px-5"
-                            >
-                                Save
-                            </button>
-                           </div>
+                            <div className="col-span-12 flex justify-center">
+                                <button
+                                    type="submit"
+                                    className=" w-5/6 bg-gradient-to-b hover:bg-gradient-to-t from-gray-500 rounded-md to-black text-white py-1 px-5"
+                                >
+                                    Save
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </form>

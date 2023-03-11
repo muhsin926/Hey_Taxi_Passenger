@@ -1,23 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { HomePage, LoginPage, RideBookingPage, SignupPage } from "./pages";
 import RideSchedulePage from "./pages/RideSchedulePage";
 import { io } from "socket.io-client";
-import { useDispatch, useSelector } from "react-redux";
-import { setSocket } from "./redux/slices/SocketSlice";
+import { useSelector } from "react-redux";
 import ProfilePage from "./pages/ProfilePage";
 import RideHistoryPage from "./pages/RideHistoryPage";
 import InboxPage from "./pages/InboxPage";
 import ScheduledRidePage from "./pages/ScheduledRidePage";
+import { LocationContext } from "./context/LocationContext";
 
 
 function App() {
   const { userId } = useSelector((state) => state.auth)
-  const { socket } = useSelector((state) => state.socket)
-  const dispatch = useDispatch()
+  const { socket , setSocket } = useContext(LocationContext)
   useEffect(() => {
     const data = io(import.meta.env.VITE_SERVER_DOMAIN)
-    dispatch(setSocket(data))
+    setSocket(data)
     socket && socket.emit("addUser", userId);
   }, [])
   return (

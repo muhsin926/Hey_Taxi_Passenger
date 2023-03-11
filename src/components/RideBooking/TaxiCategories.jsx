@@ -6,7 +6,7 @@ import url from "../../api/Api";
 import { LocationContext } from '../../context/LocationContext';
 
 const TaxiCategories = () => {
-    const { distance } = useContext(LocationContext);
+    const { distance  } = useContext(LocationContext);
     const [category, setCategory] = useState([]);
     const dispatch = useDispatch()
 

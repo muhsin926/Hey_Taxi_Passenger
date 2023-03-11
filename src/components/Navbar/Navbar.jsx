@@ -1,13 +1,13 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { blankProfile, logo1 } from "../../assets";
 import { Link } from "react-router-dom";
 import useAuth from "../../customHooks/useAuth";
-import { useSelector } from "react-redux";
 import axios from "axios";
 import url from "../../api/Api";
 import NotificationModal from "./NotificationModal";
+import { LocationContext } from "../../context/LocationContext";
 
 const navigation = [
   { name: "Home", href: "/", current: true },
@@ -29,7 +29,7 @@ export default function Navbar() {
   const [notification, setNotification] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [details, setDetails] = useState();
-  const { socket } = useSelector((state) => state.socket);
+  const { socket } = useContext(LocationContext)
   const auth = useAuth();
 
   const getNotification = async () => {
@@ -54,12 +54,10 @@ export default function Navbar() {
   };
 
   useEffect(() => {
-    socket &&
-      socket.on("ride-accept", (data) => {
-        console.log(data);
-        setNotification(data);
-      });
-  }, [socket]);
+    socket && socket.on("ride_accept", (data) => {
+      setNotification([...notification, data]);
+    });
+  });
 
   return (
     <Disclosure as="nav" className="bg-black z-1">
@@ -241,13 +239,13 @@ export default function Navbar() {
                       </Transition>
                     </Menu></>
                 ) : (
-                <Link
-                  to={"/login"}
-                  className=" text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Sign In
-                </Link>
-              )}
+                  <Link
+                    to={"/login"}
+                    className=" text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    Sign In
+                  </Link>
+                )}
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
