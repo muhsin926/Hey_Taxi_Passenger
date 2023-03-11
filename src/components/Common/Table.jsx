@@ -29,20 +29,22 @@ export const Table = ({ row }) => {
                   <th scope="col" class="px-6 py-3">
                     Fare
                   </th>
-                  <th scope="col" class="px-6 py-3">
-                    Payment
-                  </th>
+                  {row[0]?.finished && (
+                    <th scope="col" class="px-6 py-3">
+                      Payment
+                    </th>
+                  )}
                 </tr>
               </thead>
               <tbody>
-                {row.map((data) => (
+                {row?.map((data) => (
                   <tr
                     class="text-black border-b hover:bg-gray-200 bg-gray-100"
                     key={data._id}
                   >
-                     <td class="px-6 py-4">
-                        {dateFormat(data?.updatedAt, "mmm d, yyyy")}
-                      </td>
+                    <td class="px-6 py-4">
+                      {dateFormat(data?.updatedAt, "mmm d, yyyy")}
+                    </td>
                     <td class="px-6 py-4 flex items-center">
                       <img
                         src={blankProfile}
@@ -51,18 +53,18 @@ export const Table = ({ row }) => {
                       />
                       {data.receiver?.name}
                     </td>
-                  
-                      <td class="px-6 py-4">
-                        {data.category?.name}
-                      </td>
-                
+
+                    <td class="px-6 py-4">
+                      {data.category?.name}
+                    </td>
+
                     <td class="px-6 py-4">{data?.pickupLocation}</td>
                     <td class="px-6 py-4">{data?.destination}</td>
-                    {data?.finished && (
-                      <td class="px-6 py-4">
-                        ₹{data?.fare}
-                      </td>
-                    )}
+
+                    <td class="px-6 py-4">
+                      ₹{data?.fare}
+                    </td>
+
                     {data?.finished && (
                       <td class="px-6 py-4">
                         Paid
@@ -75,8 +77,8 @@ export const Table = ({ row }) => {
           </div>
         ) : (
           <div className="ml-4 mt-2 text-lg font-simibold text-red-500 text-center">
-            No Scheduled Rides.. 
-             
+            No Scheduled Rides..
+
           </div>
         )}
       </>
