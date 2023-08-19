@@ -1,1 +1,1 @@
-export default "https://server-heytaxi.onrender.com/"
+export default "https://server-heytaxi.onrender.com"
