@@ -1,1 +1,1 @@
-export default "https://www.server.gadsto.store"
+export default "https://server-heytaxi.onrender.com/"
